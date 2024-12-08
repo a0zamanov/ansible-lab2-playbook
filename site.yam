@@ -1,0 +1,57 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: update and upgrade all
+    tags: always
+    apt:
+      update_cache: yes
+
+
+- hosts: web_server
+  become: true
+  tasks:
+
+  - name: install apache2 pakage and php for Ububntu
+    tags: apache2
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: copy defult htm file for site
+    tags: file,copy,apache
+    copy:
+      src: defult_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+- hosts: workstations
+  become: true
+  tasks:
+  - name: install unzip
+    apt:
+      name: unzip
+
+  - name: install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+      des: /user/local/bin
+      owner: root
+      group: root
+      mode: 0755
+
+
+- hosts: dns_server
+  become: true
+  tasks:
+  - name: install update dns_serve
+    tags: bind9
+    apt:
+      name:
+        - bind9
+

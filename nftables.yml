@@ -1,0 +1,22 @@
+---
+- name: "Install and confige nftbales"
+  hosts: all
+  become: true
+  tasks:
+
+  - name: "install nftables"
+    apt:
+      name:
+        - nftables
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: "Copy nftables file"
+    copy:
+      src: "/home/azamanov/nftables.conf"
+      dest: "/etc/nftables.conf"
+      owner: root
+      group: root
+      mode: "0755"
+
