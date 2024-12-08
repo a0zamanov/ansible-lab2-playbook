@@ -3,10 +3,12 @@
   hosts: all
   become: true
   tasks:
+  
   - name: "install nftables"
     apt:
       name:
         - nftables
+        - curl
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
