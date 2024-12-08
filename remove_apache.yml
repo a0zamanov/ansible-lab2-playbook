@@ -15,8 +15,3 @@
       state: absent
 
 
-  - name: add php suport for apache
-    apt:
-      name: libapache2-mod-php
-      state: absent
-
